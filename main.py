@@ -1,7 +1,15 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 import requests
 from dotenv import load_dotenv
 import os
+from DogyExercise import GetExercises
+from pydantic import BaseModel
+
+class DogData(BaseModel):
+    DogeSize: str
+    DogyEnergyLevel: str
+    DogySensitivity: str
+    DogyAge: str
 
 # Load environment variables from .env file
 load_dotenv()
@@ -9,7 +17,7 @@ load_dotenv()
 app = FastAPI()
 
 base_url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
-api_key = os.getenv("GoogleAPI")
+api_key = os.getenv("GOOGLE_Maps_API_KEY")
 
 @app.get("/")
 async def my_first_get_api():
@@ -40,6 +48,38 @@ async def my_first_get_api():
 #             return HTTPException(status_code=400, detail="Error fetching data from Google Places API")
 #     except Exception as e:
 #         return HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/dog-profile/")
+async def get_exercise(data: DogData):
+    # Extract properties directly from the data model instance
+    doge_size = data.DogeSize
+    dogy_energy_level = data.DogyEnergyLevel
+    dogy_sensitivity = data.DogySensitivity
+    dogy_age = data.DogyAge
+    
+    # Assuming GetExercises is a function that you have defined elsewhere
+    return GetExercises(doge_size, dogy_energy_level, dogy_sensitivity, dogy_age)
+
+
+
+@app.get("/nearby-places/")
+def get_nearby_places(latitude: float, longitude: float):
+    types = ["park", "gym", "pet_store"]
+    places = []
+
+    for location_type in types:
+        places_results = get_places(latitude, longitude, location_type)
+        #print(places_results)
+        for place in places_results[:1]:  # Limit to 1 place per type for diversity
+            places.append({
+                "name": place.get("name"),
+                "type": location_type,
+                "latitude": place["geometry"]["location"]["lat"],
+                "longitude": place["geometry"]["location"]["lng"]
+            })
+
+    return places
  
 def get_places(latitude: float, longitude: float, location_type: str):
     params = {
@@ -61,21 +101,3 @@ def get_places(latitude: float, longitude: float, location_type: str):
         raise HTTPException(status_code=response.status_code, detail="Failed to fetch data from Google Places API.")
     
 
-    
-@app.get("/nearby-places/")
-def get_nearby_places(latitude: float, longitude: float):
-    types = ["park", "gym", "pet_store"]
-    places = []
-
-    for location_type in types:
-        places_results = get_places(latitude, longitude, location_type)
-        #print(places_results)
-        for place in places_results[:1]:  # Limit to 1 place per type for diversity
-            places.append({
-                "name": place.get("name"),
-                "type": location_type,
-                "latitude": place["geometry"]["location"]["lat"],
-                "longitude": place["geometry"]["location"]["lng"]
-            })
-
-    return places
