@@ -77,7 +77,7 @@ async def get_exercise_places(data: DogData):
     doge_size = data.DogeSize
     dogy_energy_level = data.DogyEnergyLevel
     dogy_sensitivity = data.DogySensitivity 
-    dogy_age =  data.DogyAge,
+    dogy_age =  data.DogyAge
     latitude =  data.Latitude
     longitude =data.Longitude
     
