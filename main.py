@@ -74,14 +74,18 @@ async def get_exercise(data: DogData):
 @app.post("/dog-profile/")
 async def get_exercise_places(data: DogData):
     # Extracted directly from the data model instance, including location
-    doge_size, dogy_energy_level, dogy_sensitivity, dogy_age, latitude, longitude = (
-        data.DogeSize, data.DogyEnergyLevel, data.DogySensitivity, data.DogyAge, data.Latitude, data.Longitude)
+    doge_size = data.DogeSize
+    dogy_energy_level = data.DogyEnergyLevel
+    dogy_sensitivity = data.DogySensitivity 
+    dogy_age =  data.DogyAge,
+    latitude =  data.Latitude
+    longitude =data.Longitude
     
     exercises = GetExercises(doge_size, dogy_energy_level, dogy_sensitivity, dogy_age)
-    #places = get_nearby_places(latitude, longitude)
+    places = get_nearby_places(latitude, longitude)
     print("places")
-    #print (places)
-    return {"exercises": exercises, "places": "places"}
+    print (places)
+    return {"exercises": exercises, "places": places}
 
 @app.post("/get_nearby_places/")
 def get_nearby_places(latitude: float, longitude: float):
