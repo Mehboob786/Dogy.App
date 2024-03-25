@@ -43,14 +43,20 @@ async def my_first_get_api():
 #     except Exception as e:
 #         return HTTPException(status_code=500, detail=str(e))
 
+class DogySensitivityModel(BaseModel):
+    car: bool
+    noise: bool
+    none: bool 
+
 
 class DogData(BaseModel):
     DogeSize: str
     DogyEnergyLevel: str
-    DogySensitivity: str
+    DogySensitivity: DogySensitivityModel
     DogyAge: str
     Latitude: float  # Added for location
     Longitude: float  # Added for location
+
 
 
 async def get_exercise(data: DogData):
@@ -74,7 +80,7 @@ async def get_exercise_places(data: DogData):
     exercises = GetExercises(doge_size, dogy_energy_level, dogy_sensitivity, dogy_age)
     places = get_nearby_places(latitude, longitude)
     print("places")
-    print (places)
+   # print (places)
     return {"exercises": exercises, "places": places}
 
 
