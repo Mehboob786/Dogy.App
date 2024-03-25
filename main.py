@@ -5,12 +5,6 @@ import os
 from DogyExercise import GetExercises
 from pydantic import BaseModel
 
-class DogData(BaseModel):
-    DogeSize: str
-    DogyEnergyLevel: str
-    DogySensitivity: str
-    DogyAge: str
-
 # Load environment variables from .env file
 load_dotenv()
 
@@ -50,7 +44,15 @@ async def my_first_get_api():
 #         return HTTPException(status_code=500, detail=str(e))
 
 
-@app.post("/dog-profile/")
+class DogData(BaseModel):
+    DogeSize: str
+    DogyEnergyLevel: str
+    DogySensitivity: str
+    DogyAge: str
+    Latitude: float  # Added for location
+    Longitude: float  # Added for location
+
+
 async def get_exercise(data: DogData):
     # Extract properties directly from the data model instance
     doge_size = data.DogeSize
@@ -63,7 +65,19 @@ async def get_exercise(data: DogData):
 
 
 
-@app.get("/nearby-places/")
+@app.post("/dog-profile/")
+async def get_exercise_places(data: DogData):
+    # Extracted directly from the data model instance, including location
+    doge_size, dogy_energy_level, dogy_sensitivity, dogy_age, latitude, longitude = (
+        data.DogeSize, data.DogyEnergyLevel, data.DogySensitivity, data.DogyAge, data.Latitude, data.Longitude)
+    
+    exercises = GetExercises(doge_size, dogy_energy_level, dogy_sensitivity, dogy_age)
+    places = get_nearby_places(latitude, longitude)
+    print("places")
+    print (places)
+    return {"exercises": exercises, "places": places}
+
+
 def get_nearby_places(latitude: float, longitude: float):
     types = ["park", "gym", "pet_store"]
     places = []
