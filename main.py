@@ -80,17 +80,17 @@ async def get_exercise_places(data: DogData):
     exercises = GetExercises(doge_size, dogy_energy_level, dogy_sensitivity, dogy_age)
     places = get_nearby_places(latitude, longitude)
     print("places")
-   # print (places)
+    #print (places)
     return {"exercises": exercises, "places": places}
 
-
+@app.post("/get_nearby_places/")
 def get_nearby_places(latitude: float, longitude: float):
     types = ["park", "gym", "pet_store"]
     places = []
 
     for location_type in types:
         places_results = get_places(latitude, longitude, location_type)
-        #print(places_results)
+        print(places_results)
         for place in places_results[:1]:  # Limit to 1 place per type for diversity
             places.append({
                 "name": place.get("name"),
@@ -112,6 +112,7 @@ def get_places(latitude: float, longitude: float, location_type: str):
     if response.status_code == 200:
         places_data = response.json()
         # Check if there's an error_message key in the response
+        print(places_data)
         if 'error_message' in places_data:
             error_message = places_data['error_message']
             raise HTTPException(status_code=400, detail=error_message)
