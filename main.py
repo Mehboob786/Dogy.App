@@ -4,6 +4,9 @@ from dotenv import load_dotenv
 import os
 from DogyExercise import GetExercises
 from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware
+
+
 
 # Load environment variables from .env file
 load_dotenv()
@@ -12,23 +15,16 @@ app = FastAPI()
 
 
 
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-
-
-# Define a list of allowed origins (if specific origins are needed)
-origins = [
-    "https://hackatongemini-be034436528b.herokuapp.com/",
-    # Add more origins as needed
-]
+origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Use ["*"] to allow all origins
+    allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["*"],  # Allows all methods
-    allow_headers=["*"],  # Allows all headers
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
+
 
 
 @app.get("/")
