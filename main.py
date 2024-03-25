@@ -18,7 +18,7 @@ app = FastAPI()
 origins = [
     "*",
     "https://dogy-app.vercel.app/"
-        ]
+    ]
 
 app.add_middleware(
     CORSMiddleware,
