@@ -10,6 +10,35 @@ load_dotenv()
 
 app = FastAPI()
 
+
+
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+
+# Define a list of allowed origins (if specific origins are needed)
+origins = [
+    "https://hackatongemini-be034436528b.herokuapp.com/",
+    # Add more origins as needed
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Use ["*"] to allow all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
+
+
+@app.get("/")
+async def main():
+    return {"message": "Hello World"}
+
+
+
+
+
 base_url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
 api_key = os.getenv("GOOGLE_Maps_API_KEY")
 
