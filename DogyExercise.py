@@ -20,6 +20,9 @@ genai.configure(api_key=api_key)
 
 def GetExercisestest(DogeSize,DogyEnergyLevel,DogySensitivity,DogyAge):
                 
+
+                genai.configure(api_key=api_key)
+
             # Set up the model
                 generation_config = {
             "temperature": 0.9,
@@ -65,6 +68,9 @@ def GetExercisestest(DogeSize,DogyEnergyLevel,DogySensitivity,DogyAge):
 
 def GetExercises(DogeSize,DogyEnergyLevel,DogySensitivity,DogyAge):
                 
+
+                genai.configure(api_key=api_key)
+
             # Set up the model
                 generation_config = {
             "temperature": 0.9,
