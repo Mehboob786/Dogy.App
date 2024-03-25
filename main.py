@@ -78,10 +78,10 @@ async def get_exercise_places(data: DogData):
         data.DogeSize, data.DogyEnergyLevel, data.DogySensitivity, data.DogyAge, data.Latitude, data.Longitude)
     
     exercises = GetExercises(doge_size, dogy_energy_level, dogy_sensitivity, dogy_age)
-    places = get_nearby_places(latitude, longitude)
+    #places = get_nearby_places(latitude, longitude)
     print("places")
     #print (places)
-    return {"exercises": exercises, "places": places}
+    return {"exercises": exercises, "places": "places"}
 
 @app.post("/get_nearby_places/")
 def get_nearby_places(latitude: float, longitude: float):
