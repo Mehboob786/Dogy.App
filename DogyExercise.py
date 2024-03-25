@@ -97,7 +97,7 @@ def GetExercises(DogeSize,DogyEnergyLevel,DogySensitivity,DogyAge):
                 "threshold": "BLOCK_MEDIUM_AND_ABOVE"
             },
             ]
-
+                print(genai)
                 model = genai.GenerativeModel(model_name="gemini-1.0-pro",
                                         generation_config=generation_config,
                                         safety_settings=safety_settings)
