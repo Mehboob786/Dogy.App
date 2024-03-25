@@ -99,6 +99,6 @@ def GetExercises(DogeSize, DogyEnergyLevel, DogySensitivity, DogyAge):
         response = model.generate_content(prompt_parts)
         return response.text
 
-    except HTTPExceptionsave as e:
+    except HTTPException as e:
         # Here, instead of just logging or returning the error, we throw it
         raise HTTPException(f"Failed to generate exercises due to an error: {e}")
