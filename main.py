@@ -3,6 +3,7 @@ import requests
 from dotenv import load_dotenv
 import os
 from DogyExercise import GetExercises
+from DogyExercise import GetExerciseswithlocation
 from pydantic import BaseModel
 
 # Load environment variables from .env file
@@ -77,11 +78,11 @@ async def get_exercise_places(data: DogData):
     doge_size, dogy_energy_level, dogy_sensitivity, dogy_age, latitude, longitude = (
         data.DogeSize, data.DogyEnergyLevel, data.DogySensitivity, data.DogyAge, data.Latitude, data.Longitude)
     
-    exercises = GetExercises(doge_size, dogy_energy_level, dogy_sensitivity, dogy_age)
-    places = get_nearby_places(latitude, longitude)
-    print("places")
-   # print (places)
-    return {"exercises": exercises, "places": places}
+    exercises = GetExerciseswithlocation(doge_size, dogy_energy_level, dogy_sensitivity, dogy_age,latitude,longitude)
+    #places = get_nearby_places(latitude, longitude)
+    print("exercises variable")
+    print (exercises)
+    return {"exercises": exercises, "places": "places"}
 
 
 def get_nearby_places(latitude: float, longitude: float):
