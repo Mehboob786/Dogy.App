@@ -88,15 +88,14 @@ class DogData(BaseModel):
 
 
 
-async def get_exercise(data: DogData):
+#async def get_exercise(data: DogData):
     # Extract properties directly from the data model instance
-    doge_size = data.DogeSize
-    dogy_energy_level = data.DogyEnergyLevel
-    dogy_sensitivity = data.DogySensitivity
-    dogy_age = data.DogyAge
+  #  doge_size = data.DogeSize
+  #  dogy_energy_level = data.DogyEnergyLevel
+  #  dogy_sensitivity = data.DogySensitivity
+  #  dogy_age = data.DogyAge
     
     # Assuming GetExercises is a function that you have defined elsewhere
-    return GetExercises(doge_size, dogy_energy_level, dogy_sensitivity, dogy_age)
 
 
 
