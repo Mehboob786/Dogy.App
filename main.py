@@ -98,7 +98,7 @@ class DogData(BaseModel):
 
 
 
-@app.get("/dog-profile/")
+@app.post("/dog-profile/")
 async def get_exercise_places(data: DogData):
     # Extracted directly from the data model instance, including location
     doge_size = data.DogeSize
