@@ -6,6 +6,7 @@ $ pip install google-generativeai
 
 import os
 from dotenv import load_dotenv
+from fastapi import HTTPException
 import google.generativeai as genai
 
 # Load environment variables from .env file
@@ -98,6 +99,6 @@ def GetExercises(DogeSize, DogyEnergyLevel, DogySensitivity, DogyAge):
         response = model.generate_content(prompt_parts)
         return response.text
 
-    except Exception as e:
+    except HTTPExceptionsave as e:
         # Here, instead of just logging or returning the error, we throw it
-        raise Exception(f"Failed to generate exercises due to an error: {e}")
+        raise HTTPException(f"Failed to generate exercises due to an error: {e}")
