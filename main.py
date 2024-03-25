@@ -135,7 +135,7 @@ def get_nearby_places(latitude: float, longitude: float):
 def get_places(latitude: float, longitude: float, location_type: str):
     params = {
         "location": f"{latitude},{longitude}",
-        "radius": "1000",
+        "radius": "100000",
         "type": location_type,
         "key": api_key
     }
