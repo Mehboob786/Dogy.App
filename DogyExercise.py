@@ -13,7 +13,7 @@ import google.generativeai as genai
 load_dotenv()
 
 
-api_key = os.getenv("GoogleAPI")
+api_key = os.getenv("GoogleGeminiAPIKey")
 
 
 

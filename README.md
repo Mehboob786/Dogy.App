@@ -25,7 +25,6 @@ source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
 First, ensure you have a requirements.txt file in your project directory listing all necessary packages. Then, install the dependencies:
 
 ```
-
 pip install -r requirements.txt
 
 ```
@@ -36,6 +35,8 @@ Create a .env file in your project's root directory. This file should include yo
 
 ```
 GOOGLE_Maps_API_KEY=your_google_maps_api_key
+GoogleGeminiAPIKey=your_google_Gemini_api_key
+OPENAI_API_KEY=your_OpenAI_api_key
 
 ```
 # Any other API keys or sensitive information
@@ -47,7 +48,6 @@ To run the application, use Uvicorn with the following command:
 
 ```
 uvicorn main:app --reload
-
 
 ```
 The API will then be accessible at http://127.0.0.1:8000.
