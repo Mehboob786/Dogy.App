@@ -1,7 +1,15 @@
-from fastapi import FastAPI, HTTPException, Request
-import requests
+import shutil
+from fastapi import FastAPI, HTTPException, BackgroundTasks
 from dotenv import load_dotenv
 import os
+from fastapi import File, UploadFile
+from fastapi.responses import JSONResponse
+from typing import List, Optional
+from pydantic import BaseModel
+import nutrition_api
+import assistant
+import shutil
+import requests
 from DogyExercise import GetExercises
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
@@ -45,32 +53,6 @@ api_key = os.getenv("GOOGLE_Maps_API_KEY")
 async def my_first_get_api():
     return {"message": "First FastAPI example"}
 
-# @app.get("/nearby-places-names/")
-# async def get_nearby_placesNames(latitude: float, longitude: float, radius: int = 500, place_type: str = 'park'):
-#     # Use the API key from the environment variable
-   
-#     if not api_key:
-#         raise HTTPException(status_code=500, detail="API key not found")
-    
-    
-#     params = {
-#         "location": f"{latitude},{longitude}",
-#         "radius": radius,
-#         "type": place_type,
-#         "key": api_key
-#     }
-    
-#     try:
-#         response = requests.get(base_url, params=params)
-#         if response.status_code == 200:
-#             results = response.json()['results']
-#             nearby_places = [place['name'] for place in results[:5]] # Get the first 5 places
-#             return {"nearby_places": nearby_places}
-#         else:
-#             return HTTPException(status_code=400, detail="Error fetching data from Google Places API")
-#     except Exception as e:
-#         return HTTPException(status_code=500, detail=str(e))
-
 class DogySensitivityModel(BaseModel):
     car: bool
     noise: bool
@@ -85,16 +67,6 @@ class DogData(BaseModel):
     Latitude: float  # Added for location
     Longitude: float  # Added for location
 
-
-
-#async def get_exercise(data: DogData):
-    # Extract properties directly from the data model instance
-  #  doge_size = data.DogeSize
-  #  dogy_energy_level = data.DogyEnergyLevel
-  #  dogy_sensitivity = data.DogySensitivity
-  #  dogy_age = data.DogyAge
-    
-    # Assuming GetExercises is a function that you have defined elsewhere
 
 
 
@@ -151,5 +123,43 @@ def get_places(latitude: float, longitude: float, location_type: str):
     else:
         # If the response status code is not 200, raise an HTTPException with the status code and a generic message
         raise HTTPException(status_code=response.status_code, detail="Failed to fetch data from Google Places API.")
-    
 
+
+
+@app.post("/get-nutrition/")
+async def get_nutrition(files: list[UploadFile] = File(...), user_message: Optional[str] = None):
+    image_paths = []
+    for file in files:
+        # Save temporary image file
+        try:
+            temp_file_path = f"temp_{file.filename}"
+            with open(temp_file_path, "wb") as buffer:
+                shutil.copyfileobj(file.file, buffer)
+            image_paths.append(temp_file_path)
+        finally:
+            file.file.close()
+
+    if not image_paths:
+        raise HTTPException(status_code=400, detail="No images provided")
+
+    try:
+        response = nutrition_api.get_nutritional_details(image_paths,user_message=user_message)
+        # Clean up: remove temporary files after processing
+        for path in image_paths:
+            os.remove(path)
+        return JSONResponse(content=response)
+    except Exception as e:
+        # Clean up: remove temporary files in case of an error
+        for path in image_paths:
+            os.remove(path)
+        raise HTTPException(status_code=500, detail=str(e))
+class AssistantRequest(BaseModel):
+    name: str
+    instructions: str
+    model: str
+    file_ids: List[str]
+
+class MessageRequest(BaseModel):
+    thread_id: str
+    assistant_id: str
+    user_message: str
