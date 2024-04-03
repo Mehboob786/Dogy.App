@@ -55,12 +55,18 @@ The API will then be accessible at http://127.0.0.1:8000.
 # API Endpoints
 
 GET /: Displays a welcome message.
+
 Dog Profile and Exercise Recommendations
+
 POST /dog-profile/: Accepts a dog's profile and returns exercise recommendations and nearby exercise locations.
 Nutrition Analysis
+
 POST /get-nutrition/: Analyzes uploaded images of dog food packaging to provide nutrition details.
+
 # Development Notes
+
 Customize the get_places and get_nearby_places functions based on your requirements for finding dog-friendly exercise locations.
 The get_nutrition endpoint may require integrating with an external service or implementing a solution for nutrition analysis.
+
 # Contributing
 Contributions are welcome! Please contribute by reporting bugs, suggesting enhancements, or submitting pull requests.
